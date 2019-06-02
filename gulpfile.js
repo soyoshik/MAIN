@@ -1,6 +1,7 @@
 var gulp          = require('gulp');
 var $             = require('gulp-load-plugins')();
 var browserSync   = require('browser-sync');
+const babel       = require('gulp-babel');
 
 var paths = {
   "htmlSrc" : "./*.html",
@@ -73,8 +74,22 @@ gulp.task('js', function() {
   }));
 });
 
+gulp.task('babel', function() {
+  return gulp.src([paths.es6Src])
+  .pipe($.plumber())
+  .pipe(babel({
+      presets: ['@babel/env']
+  }))
+  .pipe($.uglify({preserveComments: 'license'}))
+  .pipe($.concat('mainEs6.min.js', {newLine: '\n'}))
+  .pipe(gulp.dest(paths.dest + 'js'))
+  .pipe(browserSync.reload({
+    stream: true,
+    once  : true
+  }));
+});
 
-gulp.task('default', ['image', 'js', 'bs', 'scss', 'bs-reload',], function() {
+gulp.task('default', ['image', 'js', 'bs', 'scss', 'bs-reload','babel'], function() {
   $.watch([paths.htmlSrc],function(e) {
     gulp.start("bs-reload")
   });
@@ -87,5 +102,7 @@ gulp.task('default', ['image', 'js', 'bs', 'scss', 'bs-reload',], function() {
   $.watch([paths.jsSrc],function(e) {
     gulp.start("js")
   });
-
+  $.watch([paths.es6Src],function(e) {
+    gulp.start("babel")
+  });
 });

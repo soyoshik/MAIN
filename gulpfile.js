@@ -15,9 +15,10 @@ var path = {
 
 
 gulp.task('bs', function() {
-  browserSync.init({
+  return browserSync.init({
     port: 3002,
-    server: ['./','./dest/html/page/']
+    server: ["./", "./dest/html/page"],
+    startPath: './dest/html/page/index.html',
   });
 });
 
@@ -32,7 +33,11 @@ gulp.task("ejs", function() {
     .pipe($.plumber())
     .pipe($.ejs())
     .pipe($.rename({extname: '.html'}))
-    .pipe(gulp.dest(path.dest + "html"));
+    .pipe(gulp.dest(path.dest + "html"))
+    .pipe(browserSync.reload({
+      stream: true,
+      once  : true
+    }));
 });
 
 gulp.task('scss', function() {
@@ -103,8 +108,7 @@ gulp.task('default', ['image', 'ejs', 'js', 'bs', 'scss', 'bs-reload','babel'], 
     gulp.start("bs-reload")
   });
   $.watch([path.ejsSrc+"*.ejs", path.ejsSrc+"**/*.ejs"],function(e) {
-    gulp.start("ejs");
-    gulp.start("bs-reload");
+    gulp.start("ejs")
   });
   $.watch([path.scssSrc],function(e) {
     gulp.start("scss")

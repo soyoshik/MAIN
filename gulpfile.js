@@ -17,8 +17,9 @@ var path = {
 gulp.task('bs', function() {
   return browserSync.init({
     port: 3002,
-    server: ["./", "./dest/html/page"],
-    startPath: './dest/html/page/index.html',
+    server: ["./", "./dest"],
+    startPath: './dest/index.html',
+    notify: false,
   });
 });
 
@@ -33,7 +34,7 @@ gulp.task("ejs", function() {
     .pipe($.plumber())
     .pipe($.ejs())
     .pipe($.rename({extname: '.html'}))
-    .pipe(gulp.dest(path.dest + "html"))
+    .pipe(gulp.dest(path.dest))
     .pipe(browserSync.reload({
       stream: true,
       once  : true

@@ -2,6 +2,8 @@ var gulp          = require('gulp');
 var $             = require('gulp-load-plugins')();
 var browserSync   = require('browser-sync');
 const babel       = require('gulp-babel');
+var sass          = require('gulp-sass');
+sass.compiler = require('node-sass');
 
 var path = {
   "htmlSrc" : "./*.html",
@@ -20,6 +22,7 @@ gulp.task('bs', function() {
     server: ["./", "./dest"],
     startPath: './dest/index.html',
     notify: false,
+    directory: true
   });
 });
 
@@ -32,7 +35,14 @@ gulp.task("ejs", function() {
       path.ejsSrc + "**/*.ejs", "!" + path.ejsSrc + "**/_*.ejs"
     ])
     .pipe($.plumber())
-    .pipe($.ejs())
+    .pipe($.data(function(file) {
+      var path1 = file.path.substr(file.path.indexOf('src'));
+      var rootPath = '../'.repeat([path1.split('/').length - 2]);
+      return {
+        'rootPath': rootPath
+      }
+    }))
+    .pipe($.ejs({},{},{ext: '.html'}))
     .pipe($.rename({extname: '.html'}))
     .pipe(gulp.dest(path.dest))
     .pipe(browserSync.reload({
@@ -43,6 +53,7 @@ gulp.task("ejs", function() {
 
 gulp.task('scss', function() {
   return gulp.src(path.scssSrc)
+  .pipe($.plumber())
   .pipe($.sourcemaps.init())
   .pipe($.sass()).on('error', $.sass.logError)
   .pipe($.autoprefixer({

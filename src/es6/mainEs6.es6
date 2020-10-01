@@ -1,4 +1,4 @@
 const test = (e) => {
-  console.log('testes');
+  console.log('es6');
 }
 test();

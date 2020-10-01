@@ -1,2 +1,1 @@
-var st = "hey";
-console.log(st);
+console.log("mainNormalJs");

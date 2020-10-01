@@ -1,1 +1,11 @@
-$textColor: #ccc;
+@mixin testBorder($color:#ccc) {
+  border: 1px dashed $color;
+}
+
+$textColor: #545454; //共通テキストカラー
+$textColor-gray: #999;
+$linkColor: #5ac6bc;
+
+$normalLttrSpace: .07em;
+$normalLineHeight: 2;
+$horizonMarginRate : 7%; //共通の左右マージン

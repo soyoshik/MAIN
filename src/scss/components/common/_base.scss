@@ -1,9 +1,11 @@
-body {
-  background-color: #ddd;
-}
-.mainTitle {
-  color: #fff;
-  text-align: center;
-  margin: 50px auto;
-  font-size: 60px;
+//メディアクエリ（マップ）
+$breakpoints: (
+"sp": "screen and (max-width: 767px)",
+"tab": "screen and (max-width: 1024px)",
+"pc": "screen and (min-width: 1280px)",
+);
+@mixin mq($breakpoint: sp) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
 }

@@ -1,5 +1,10 @@
-@import "./base/variables";
-@import "./base/lib/sanitize";
+@import "./base/variables.scss";
+@import "./base/lib/sanitize.scss";
+@import "./base/lib/slick.scss";
+@import "./base/lib/slick-theme.scss";
 
-//base
 @import "./components/common/base";
+@import "./components/common/modules";
+@import "./components/common/utility";
+
+//ページ固有スタイル
